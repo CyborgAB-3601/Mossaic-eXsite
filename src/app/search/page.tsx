@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // ── PREMIUM SVG ICONS ───────────────────────────────────────────────
 const IconDashboard = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg>;
@@ -14,6 +15,7 @@ export default function SearchPage() {
   const [activeTab, setActiveTab] = useState("Search");
   const [searchValue, setSearchValue] = useState("");
   const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const router = useRouter();
 
   useEffect(() => {
     const currentTheme = document.documentElement.getAttribute("data-theme") as "dark" | "light";
@@ -21,6 +23,15 @@ export default function SearchPage() {
       setTheme(currentTheme);
     }
   }, []);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchValue.trim()) {
+      router.push(`/individual-search?q=${encodeURIComponent(searchValue)}`);
+    } else {
+      router.push(`/individual-search`);
+    }
+  };
 
   const toggleTheme = () => {
     const next = theme === "dark" ? "light" : "dark";
@@ -216,21 +227,23 @@ export default function SearchPage() {
               boxShadow: theme === "dark" ? "0 15px 35px rgba(0,0,0,0.3)" : "0 8px 30px rgba(130,77,105,0.1)"
             }}>
               <span style={{ marginRight: "0.8rem", fontSize: "1.4rem", animation: "pulse 2s infinite" }}>✨</span>
-              <input 
-                type="text" 
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                placeholder="Describe the perfect product or ask for insights..."
-                style={{ flex: 1, background: "transparent", color: "var(--text)", fontSize: "1.05rem", border: "none", outline: "none", fontWeight: 500 }}
-              />
-              <span style={{ margin: "0 1.25rem", fontSize: "1.2rem", opacity: 0.4, cursor: "pointer" }}>🎙️</span>
-              <button className="btn-primary" style={{ 
-                padding: "0.85rem 2.25rem", borderRadius: "999px", fontWeight: 800, fontSize: "1rem", border: "none",
-                background: "linear-gradient(135deg, var(--mauve) 0%, var(--navy) 100%)",
-                color: "#FAE5D8"
-              }}>
-                Search →
-              </button>
+              <form onSubmit={handleSearch} style={{ flex: 1, display: "flex", alignItems: "center" }}>
+                <input 
+                  type="text" 
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  placeholder="Describe the perfect product or ask for insights..."
+                  style={{ flex: 1, background: "transparent", color: "var(--text)", fontSize: "1.05rem", border: "none", outline: "none", fontWeight: 500 }}
+                />
+                <span style={{ margin: "0 1.25rem", fontSize: "1.2rem", opacity: 0.4, cursor: "pointer" }}>🎙️</span>
+                <button type="submit" className="btn-primary" style={{ 
+                  padding: "0.85rem 2.25rem", borderRadius: "999px", fontWeight: 800, fontSize: "1rem", border: "none",
+                  background: "linear-gradient(135deg, var(--mauve) 0%, var(--navy) 100%)",
+                  color: "#FAE5D8"
+                }}>
+                  Search →
+                </button>
+              </form>
             </div>
           </div>
 
@@ -238,7 +251,10 @@ export default function SearchPage() {
             {suggestions.map((s) => (
               <button 
                 key={s} 
-                onClick={() => setSearchValue(s)}
+                onClick={() => {
+                  setSearchValue(s);
+                  router.push(`/individual-search?q=${encodeURIComponent(s)}`);
+                }}
                 style={{ 
                   background: "var(--pill-bg)", border: "1px solid var(--border)", 
                   padding: "0.45rem 1rem", borderRadius: "99px", fontSize: "0.8rem", 

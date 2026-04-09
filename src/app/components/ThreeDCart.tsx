@@ -31,11 +31,12 @@ export default function ThreeDCart() {
       >
         <Suspense fallback={null}>
           <Stage
-            environment="city"
             intensity={0.6}
             adjustCamera={1.2}
             shadows={false}
           >
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} intensity={1} />
             <Model />
           </Stage>
           <OrbitControls

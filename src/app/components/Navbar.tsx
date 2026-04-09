@@ -100,6 +100,7 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
           >
             {([
               { label: "Search", href: "/search" },
+              { label: "Individual Search", href: "/individual-search" },
               { label: "Blog", href: "#blog" },
               { label: "Resources", href: "#resources" },
               { label: "Contact Us", href: "#contact-us" }
