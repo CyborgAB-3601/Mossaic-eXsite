@@ -1,32 +1,46 @@
-from supabase import create_client
-import google.generativeai as genai
+import os
 from app.core.config import SUPABASE_URL, SUPABASE_KEY, GEMINI_API_KEY, EMBEDDING_MODEL, GEMINI_MODEL
 
-# Supabase: lightweight, loads instantly
+# ── Supabase (lightweight, always loads) ────────────────────────
+from supabase import create_client
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-# Gemini: lightweight, loads instantly
+# ── Gemini (lightweight, always loads) ──────────────────────────
+import google.generativeai as genai
 genai.configure(api_key=GEMINI_API_KEY)
 gemini_model = genai.GenerativeModel(GEMINI_MODEL)
 
-# SentenceTransformer: HEAVY (~400MB). Load lazily so port opens first.
-_embedding_model = None
+# ── SentenceTransformer LAZY LOADER ─────────────────────────────
+# sentence-transformers + torch are HEAVY (~800MB).
+# We load them ONLY on first API request, NOT at import time.
+# This lets uvicorn bind the port immediately on Render.
+_embedding_model_instance = None
 
-def get_embedding_model():
-    global _embedding_model
-    if _embedding_model is None:
-        from sentence_transformers import SentenceTransformer
-        print("Loading SentenceTransformer model (first request)...")
-        _embedding_model = SentenceTransformer(EMBEDDING_MODEL)
-        print("Model loaded successfully!")
-    return _embedding_model
+def _load_embedding_model():
+    global _embedding_model_instance
+    if _embedding_model_instance is None:
+        print("[eXsite] Loading SentenceTransformer model (first request)...", flush=True)
+        try:
+            from sentence_transformers import SentenceTransformer
+            _embedding_model_instance = SentenceTransformer(EMBEDDING_MODEL)
+            print(f"[eXsite] Model '{EMBEDDING_MODEL}' loaded successfully!", flush=True)
+        except Exception as e:
+            print(f"[eXsite] ERROR loading model: {e}", flush=True)
+            raise
+    return _embedding_model_instance
 
-# Keep backward compatibility: create a proxy object
+
 class _LazyEmbeddingModel:
-    """Proxy that loads the real model on first use."""
+    """
+    Drop-in proxy for SentenceTransformer.
+    Defers the heavy model load to the first .encode() call.
+    """
     def encode(self, *args, **kwargs):
-        return get_embedding_model().encode(*args, **kwargs)
-    def __getattr__(self, name):
-        return getattr(get_embedding_model(), name)
+        return _load_embedding_model().encode(*args, **kwargs)
 
+    def __getattr__(self, name):
+        return getattr(_load_embedding_model(), name)
+
+
+# This is what the rest of the app imports
 embedding_model = _LazyEmbeddingModel()

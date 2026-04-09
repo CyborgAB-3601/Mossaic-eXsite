@@ -1,8 +1,7 @@
-pandas
-numpy
-sentence-transformers
+fastapi
+uvicorn[standard]
 supabase
 google-generativeai
 python-dotenv
-fastapi
-uvicorn[standard]
+sentence-transformers
+numpy
