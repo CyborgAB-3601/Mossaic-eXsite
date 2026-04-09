@@ -78,4 +78,4 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         });
         return true;
     }
-});
+});const API_BASE = "https://ai-ecommerce-backend-z48c.onrender.com";
