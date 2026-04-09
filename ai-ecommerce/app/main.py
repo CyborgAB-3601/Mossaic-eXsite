@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -20,7 +21,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# Only mount static files if the directory exists (won't exist on Render)
+if os.path.isdir("static"):
+    app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 class SearchRequest(BaseModel):
@@ -35,7 +38,9 @@ class CompareRequest(BaseModel):
 
 @app.get("/")
 async def serve_ui():
-    return FileResponse("static/index.html")
+    if os.path.isfile("static/index.html"):
+        return FileResponse("static/index.html")
+    return {"status": "ok", "service": "AI E-Commerce API", "docs": "/docs"}
 
 
 @app.get("/api/health")
