@@ -226,7 +226,11 @@ export default function SearchPage() {
               zIndex: 1,
               boxShadow: theme === "dark" ? "0 15px 35px rgba(0,0,0,0.3)" : "0 8px 30px rgba(130,77,105,0.1)"
             }}>
-              <span style={{ marginRight: "0.8rem", fontSize: "1.4rem", animation: "pulse 2s infinite" }}>✨</span>
+              <span 
+                onClick={() => router.push('/bundle')}
+                style={{ marginRight: "0.8rem", fontSize: "1.4rem", animation: "pulse 2s infinite", cursor: "pointer" }}
+                title="Explore AI-Curated Bundles"
+              >✨</span>
               <form onSubmit={handleSearch} style={{ flex: 1, display: "flex", alignItems: "center" }}>
                 <input 
                   type="text" 

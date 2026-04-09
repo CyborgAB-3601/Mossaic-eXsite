@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import ProductCard from "../components/ProductCard";
+import BundleCard from "../components/BundleCard";
 
 // ── PREMIUM SVG ICONS ───────────────────────────────────────────────
 const IconDashboard = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg>;
@@ -12,12 +11,9 @@ const IconCart = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="non
 const IconOrder = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>;
 const IconTracker = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>;
 
-export default function IndividualSearchPage() {
-  const [searchValue, setSearchValue] = useState("Premium Noise-Cancelling Headphones");
-  const [hasSearched, setHasSearched] = useState(true);
+export default function BundlePage() {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
-  const [activeTab, setActiveTab] = useState("Search");
-  const router = useRouter();
+  const [activeTab, setActiveTab] = useState("Bundle");
 
   useEffect(() => {
     const currentTheme = document.documentElement.getAttribute("data-theme") as "dark" | "light";
@@ -32,13 +28,6 @@ export default function IndividualSearchPage() {
     document.documentElement.setAttribute("data-theme", next);
   };
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchValue.trim()) {
-      setHasSearched(true);
-    }
-  };
-
   const sidebarLinks = [
     { label: "Dashboard", Icon: IconDashboard },
     { label: "Search", Icon: IconSearch },
@@ -47,32 +36,37 @@ export default function IndividualSearchPage() {
     { label: "Tracker", Icon: IconTracker },
   ];
 
-  const results = [
+  const bundles = [
     {
-      name: "AcousticPro Elite X1",
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=80",
-      rating: 4.9,
-      features: ["40hr battery life", "Active ANC 2.0"],
-      price: 349.00,
-      msrp: 399.00,
-      badge: "Best Offer",
-      retailers: [
-        { name: "Amazon", price: 349.00, lowest: true, delivery: "Free Delivery Today" },
-        { name: "Flipkart", price: 354.50, delivery: "2-Day Delivery" }
+      title: "Ultimate Workspace Pack",
+      discount: "15%",
+      isBest: true,
+      products: [
+        { name: "Samsung 34\" Odyssey Monitor", price: 34999, retailer: "Amazon", image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=300&q=80" },
+        { name: "Logitech MX Master Mouse", price: 8495, retailer: "Flipkart", image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=300&q=80" }
       ],
-      summary: "Save $50.00 (12%) compared to market average."
+      totalPrice: 40899,
+      originalTotal: 43494
     },
     {
-      name: "SonicFlow S5",
-      image: "https://images.unsplash.com/photo-1524678606370-a47ad25cb82a?auto=format&fit=crop&w=500&q=80",
-      rating: 4.7,
-      features: ["35hr battery life", "USB-C Fast Charging"],
-      price: 279.99,
-      retailers: [
-        { name: "Amazon", price: 284.00 },
-        { name: "Flipkart", price: 279.99, lowest: true }
+      title: "Amazon Elite Combo (Amazon Only)",
+      discount: "10%",
+      products: [
+        { name: "Samsung 34\" Odyssey Monitor", price: 36500, retailer: "Amazon", image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=300&q=80" },
+        { name: "Logitech MX Master Mouse", price: 9200, retailer: "Amazon", image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=300&q=80" }
       ],
-      summary: "Lowest price found on Flipkart."
+      totalPrice: 45700,
+      originalTotal: 49200
+    },
+    {
+      title: "Flipkart Pro Station (Flipkart Only)",
+      discount: "12%",
+      products: [
+        { name: "Samsung 34\" Odyssey Monitor", price: 35800, retailer: "Flipkart", image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=300&q=80" },
+        { name: "Logitech MX Master Mouse", price: 8495, retailer: "Flipkart", image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=300&q=80" }
+      ],
+      totalPrice: 44295,
+      originalTotal: 47990
     }
   ];
 
@@ -168,36 +162,9 @@ export default function IndividualSearchPage() {
           pointerEvents: "none"
         }} />
 
-        <div style={{ position: "relative", zIndex: 10, padding: "2rem 3rem", width: "100%" }}>
+        <div style={{ position: "relative", zIndex: 10, padding: "0.5rem 3rem", width: "100%" }}>
           {/* Top Header */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "3rem" }}>
-          <form onSubmit={handleSearch} style={{ position: "relative", width: "100%", maxWidth: "600px" }}>
-            <div style={{ 
-              background: "var(--surface)", 
-              borderRadius: "999px", 
-              padding: "0.4rem 0.4rem 0.4rem 1.5rem",
-              display: "flex",
-              alignItems: "center",
-              border: "1px solid var(--border)",
-              boxShadow: "0 8px 30px rgba(0,0,0,0.1)"
-            }}>
-              <span 
-                onClick={() => router.push('/bundle')}
-                style={{ marginRight: "0.8rem", fontSize: "1.2rem", animation: "pulse 2s infinite", cursor: "pointer" }}
-                title="Explore AI-Curated Bundles"
-              >✨</span>
-              <input 
-                type="text" 
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                placeholder="Search for products..."
-                style={{ flex: 1, background: "transparent", color: "var(--text)", fontSize: "0.95rem", border: "none", outline: "none", marginLeft: "0.75rem" }}
-              />
-              <button className="btn-primary" style={{ padding: "0.6rem 1.5rem", borderRadius: "999px" }}>Search</button>
-            </div>
-          </form>
-
-          <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+          <div style={{ display: "flex", justifyContent: "flex-end", gap: "1rem", alignItems: "center", marginBottom: "0.5rem" }}>
             <button
               onClick={toggleTheme}
               style={{
@@ -213,33 +180,39 @@ export default function IndividualSearchPage() {
             </button>
             <div style={{ width: 34, height: 34, borderRadius: "50%", background: "var(--surface)", border: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}>👤</div>
           </div>
-        </div>
 
-        {/* Results Content */}
-        {hasSearched && (
-          <div style={{ zIndex: 10 }}>
-            <div style={{ marginBottom: "2.5rem" }}>
-              <h1 style={{ fontSize: "2.5rem", fontWeight: 800, color: "var(--text)" }}>Search Results</h1>
-              <div style={{ display: "flex", gap: "0.5rem", fontSize: "1rem", color: "var(--text-muted)", marginTop: "0.5rem" }}>
-                <span style={{ color: "var(--mauve)", fontWeight: 700 }}>{results.length} products found</span>
-                <span>for "{searchValue}"</span>
+          <div style={{ marginBottom: "1rem" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+              <div>
+                <h1 style={{ fontSize: "2.8rem", fontWeight: 900, color: "var(--text)", letterSpacing: "-.02em" }}>AI-Curated Combo Bundles</h1>
+                <p style={{ color: "var(--text-muted)", fontSize: "1rem", marginTop: "0.5rem", maxWidth: "600px" }}>
+                  NEXACART Intelligence: High-precision peripheral matching for elite efficiency.
+                </p>
+              </div>
+              <div style={{ 
+                background: "var(--pill-bg)", 
+                padding: "0.6rem 1.25rem", 
+                borderRadius: "99px", 
+                fontSize: "0.75rem", 
+                fontWeight: 800, 
+                color: "var(--mauve)",
+                border: "1px solid var(--border)"
+              }}>
+                3 BEST MATCHES FOUND
               </div>
             </div>
-
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              {results.map((product, index) => (
-                <ProductCard key={index} {...product} />
-              ))}
-            </div>
           </div>
-        )}
 
-        {!hasSearched && (
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 10 }}>
-            <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>🔍</div>
-            <h2 style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--text-muted)" }}>Search for something to see results</h2>
+          <div style={{ 
+            display: "grid", 
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", 
+            gap: "2.5rem",
+            maxWidth: "1200px" 
+          }}>
+            {bundles.map((bundle, index) => (
+              <BundleCard key={index} {...bundle} />
+            ))}
           </div>
-        )}
         </div>
       </main>
     </div>
