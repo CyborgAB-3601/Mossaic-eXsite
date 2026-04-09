@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import ProductCard from "../components/ProductCard";
 import { useRouter } from "next/navigation";
-import BundleCard from "../components/BundleCard";
 
 // ── PREMIUM SVG ICONS ───────────────────────────────────────────────
 const IconDashboard = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg>;
@@ -12,9 +12,9 @@ const IconCart = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="non
 const IconOrder = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>;
 const IconTracker = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>;
 
-export default function BundlePage() {
+export default function CartPage() {
   const [theme, setTheme] = useState<"dark" | "light">("light");
-  const [activeTab, setActiveTab] = useState("Bundle");
+  const [activeTab, setActiveTab] = useState("Cart");
   const router = useRouter();
 
   useEffect(() => {
@@ -37,39 +37,35 @@ export default function BundlePage() {
     { label: "Tracker", Icon: IconTracker },
   ];
 
-  const bundles = [
+  const cartItems = [
     {
-      title: "Ultimate Workspace Pack",
-      discount: "15%",
-      isBest: true,
-      products: [
-        { name: "Samsung 34\" Odyssey Monitor", price: 34999, retailer: "Amazon", image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=300&q=80" },
-        { name: "Logitech MX Master Mouse", price: 8495, retailer: "Flipkart", image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=300&q=80" }
+      name: "Samsung 34\" Odyssey Monitor",
+      image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=500&q=80",
+      rating: 4.8,
+      features: ["165Hz Refresh Rate", "Ultra-Wide Curve"],
+      price: 34999,
+      msrp: 42000,
+      retailers: [
+        { name: "Amazon", price: 34999, lowest: true, delivery: "Free Delivery by Tomorrow" },
+        { name: "Flipkart", price: 36500, delivery: "3-Day Delivery" }
       ],
-      totalPrice: 40899,
-      originalTotal: 43494
+      summary: "Saved ₹7,001 against MSRP. Best price on Amazon."
     },
     {
-      title: "Amazon Elite Combo (Amazon Only)",
-      discount: "10%",
-      products: [
-        { name: "Samsung 34\" Odyssey Monitor", price: 36500, retailer: "Amazon", image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=300&q=80" },
-        { name: "Logitech MX Master Mouse", price: 9200, retailer: "Amazon", image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=300&q=80" }
+      name: "Logitech MX Master Mouse",
+      image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=500&q=80",
+      rating: 4.9,
+      features: ["Ergonomic Design", "Wireless Multi-Device"],
+      price: 8495,
+      retailers: [
+        { name: "Flipkart", price: 8495, lowest: true, delivery: "Express Shipping" },
+        { name: "Amazon", price: 9200, delivery: "Prime Shipping" }
       ],
-      totalPrice: 45700,
-      originalTotal: 49200
-    },
-    {
-      title: "Flipkart Pro Station (Flipkart Only)",
-      discount: "12%",
-      products: [
-        { name: "Samsung 34\" Odyssey Monitor", price: 35800, retailer: "Flipkart", image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=300&q=80" },
-        { name: "Logitech MX Master Mouse", price: 8495, retailer: "Flipkart", image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=300&q=80" }
-      ],
-      totalPrice: 44295,
-      originalTotal: 47990
+      summary: "Found lowest price on Flipkart."
     }
   ];
+
+  const total = cartItems.reduce((acc, item) => acc + item.price, 0);
 
   return (
     <div style={{ 
@@ -109,10 +105,10 @@ export default function BundlePage() {
               <li key={label}>
                 <button
                   onClick={() => {
-                    setActiveTab(label);
-                    if (label === "Search") router.push('/search');
-                    if (label === "Dashboard") router.push('/');
-                    if (label === "Cart") router.push('/cart');
+                      setActiveTab(label);
+                      if (label === "Search") router.push('/search');
+                      if (label === "Dashboard") router.push('/');
+                      if (label === "Cart") router.push('/cart');
                   }}
                   style={{
                     width: "100%",
@@ -171,28 +167,31 @@ export default function BundlePage() {
         <div style={{ position: "relative", zIndex: 10, padding: "0.5rem 3rem", width: "100%" }}>
           {/* Top Header */}
           <div style={{ display: "flex", justifyContent: "flex-end", gap: "1rem", alignItems: "center", marginBottom: "0.5rem" }}>
-            <button
-              onClick={toggleTheme}
-              style={{
-                width: 38, height: 38,
-                borderRadius: "50%",
-                background: "var(--surface)",
-                border: "1px solid var(--border)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: "1.1rem"
-              }}
-            >
-              {theme === "dark" ? "☀️" : "🌙"}
-            </button>
-            <div style={{ width: 34, height: 34, borderRadius: "50%", background: "var(--surface)", border: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}>👤</div>
+             <button
+                onClick={toggleTheme}
+                style={{
+                  width: 38, height: 38,
+                  borderRadius: "50%",
+                  background: "var(--surface)",
+                  border: "1px solid var(--border)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: "1.1rem"
+                }}
+             >
+                {theme === "dark" ? "☀️" : "🌙"}
+             </button>
+             <div style={{ width: 34, height: 34, borderRadius: "50%", background: "var(--surface)", border: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "center" }}>👤</div>
           </div>
 
-          <div style={{ marginBottom: "1rem" }}>
+          <div style={{ marginBottom: "2rem" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
               <div>
-                <h1 style={{ fontSize: "2.8rem", fontWeight: 900, color: "var(--text)", letterSpacing: "-.02em" }}>AI-Curated Combo Bundles</h1>
+                <h1 style={{ fontSize: "2.8rem", fontWeight: 900, color: "var(--text)", letterSpacing: "-.02em", display: "flex", alignItems: "center", gap: "1rem" }}>
+                  <span style={{ animation: "pulse 2s infinite", cursor: "pointer" }} onClick={() => router.push('/bundle')}>✨</span>
+                  Shopping Cart
+                </h1>
                 <p style={{ color: "var(--text-muted)", fontSize: "1rem", marginTop: "0.5rem", maxWidth: "600px" }}>
-                  NEXACART Intelligence: High-precision peripheral matching for elite efficiency.
+                  Review your items and proceed to checkout with AI intelligence.
                 </p>
               </div>
               <div style={{ 
@@ -204,20 +203,44 @@ export default function BundlePage() {
                 color: "var(--mauve)",
                 border: "1px solid var(--border)"
               }}>
-                3 BEST MATCHES FOUND
+                {cartItems.length} ITEMS READY
               </div>
             </div>
           </div>
 
-          <div style={{ 
-            display: "grid", 
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", 
-            gap: "2.5rem",
-            maxWidth: "1200px" 
-          }}>
-            {bundles.map((bundle, index) => (
-              <BundleCard key={index} {...bundle} />
-            ))}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: "2rem", marginTop: "1rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+               {cartItems.map((item, index) => (
+                  <ProductCard key={index} {...item} compact={true} />
+               ))}
+            </div>
+
+            <div style={{ position: "sticky", top: "1rem", height: "fit-content" }}>
+               <div className="glass-card" style={{ padding: "2rem", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+                  <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "var(--text)" }}>Order Summary</h3>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                     <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.9rem", color: "var(--text-muted)" }}>
+                        <span>Subtotal ({cartItems.length} items)</span>
+                        <span>₹{total.toLocaleString()}</span>
+                     </div>
+                     <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.9rem", color: "var(--text-muted)" }}>
+                        <span>Shipping</span>
+                        <span style={{ color: "#00C853" }}>FREE</span>
+                     </div>
+                     <div style={{ height: "1px", background: "var(--border)", margin: "0.5rem 0" }}></div>
+                     <div style={{ display: "flex", justifyContent: "space-between", fontSize: "1.1rem", fontWeight: 800, color: "var(--text)" }}>
+                        <span>Total</span>
+                        <span>₹{total.toLocaleString()}</span>
+                     </div>
+                  </div>
+                  <button className="btn-primary" style={{ width: "100%", justifyContent: "center", padding: "1rem", borderRadius: "12px", border: "none", fontWeight: 800, fontSize: "1rem" }}>
+                     Proceed to Checkout
+                  </button>
+                  <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", textAlign: "center" }}>
+                     Secure payments powered by eXsite AI
+                  </div>
+               </div>
+            </div>
           </div>
         </div>
       </main>

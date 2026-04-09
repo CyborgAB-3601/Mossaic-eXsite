@@ -6,14 +6,13 @@ import HeroSection from "./components/HeroSection";
 import Footer from "./components/Footer";
 
 export default function Home() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<"dark" | "light">("light");
 
   useEffect(() => {
-    const saved = localStorage.getItem("nx-theme") as "dark" | "light" | null;
-    if (saved) {
-      setTheme(saved);
-      document.documentElement.setAttribute("data-theme", saved);
-    }
+    // Force light mode on initial load
+    setTheme("light");
+    document.documentElement.setAttribute("data-theme", "light");
+    localStorage.setItem("nx-theme", "light");
   }, []);
 
   const toggleTheme = () => {

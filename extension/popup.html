@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <header>
+      <div class="logo">e<span class="highlight">X</span>site</div>
+      <div class="tagline">AI SEARCH ENGINE</div>
+    </header>
+
+    <main id="app-content">
+      <!-- Default State -->
+      <div id="default-state" class="state">
+        <div class="hero-text">Start Shopping</div>
+        <p class="description">Browse Amazon or Flipkart to find AI-powered deals instantly.</p>
+      </div>
+
+      <!-- Retailer State (Hidden by default) -->
+      <div id="retailer-state" class="state" style="display: none;">
+        <div class="product-mini-card">
+          <img id="product-image" src="" alt="Product">
+          <div class="product-info">
+            <div id="product-title" class="title">Product Name</div>
+            <div id="product-price" class="price">₹0</div>
+          </div>
+        </div>
+        
+        <div class="comparison-card">
+          <div class="comp-label">BEST PRICE FOUND</div>
+          <div class="comp-details">
+            <span id="best-retailer">Flipkart</span>
+            <span id="best-price" class="comp-price">₹0</span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <button id="ai-search-btn" class="btn-primary">AI Search ⚡</button>
+    </footer>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

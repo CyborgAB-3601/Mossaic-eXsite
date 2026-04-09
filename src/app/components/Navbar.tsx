@@ -102,6 +102,7 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
               { label: "Search", href: "/search" },
               { label: "Individual Search", href: "/individual-search" },
               { label: "Bundles", href: "/bundle" },
+              { label: "Cart", href: "/cart" },
               { label: "Blog", href: "#blog" },
               { label: "Resources", href: "#resources" },
               { label: "Contact Us", href: "#contact-us" }

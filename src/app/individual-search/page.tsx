@@ -15,15 +15,14 @@ const IconTracker = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="
 export default function IndividualSearchPage() {
   const [searchValue, setSearchValue] = useState("Premium Noise-Cancelling Headphones");
   const [hasSearched, setHasSearched] = useState(true);
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<"dark" | "light">("light");
   const [activeTab, setActiveTab] = useState("Search");
   const router = useRouter();
 
   useEffect(() => {
-    const currentTheme = document.documentElement.getAttribute("data-theme") as "dark" | "light";
-    if (currentTheme) {
-      setTheme(currentTheme);
-    }
+    // Force light mode on initial load
+    setTheme("light");
+    document.documentElement.setAttribute("data-theme", "light");
   }, []);
 
   const toggleTheme = () => {
@@ -113,7 +112,12 @@ export default function IndividualSearchPage() {
             {sidebarLinks.map(({ label, Icon }) => (
               <li key={label}>
                 <button
-                  onClick={() => setActiveTab(label)}
+                  onClick={() => {
+                    setActiveTab(label);
+                    if (label === "Search") router.push('/search');
+                    if (label === "Dashboard") router.push('/');
+                    if (label === "Cart") router.push('/cart');
+                  }}
                   style={{
                     width: "100%",
                     display: "flex",

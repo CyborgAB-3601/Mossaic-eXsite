@@ -12,34 +12,7 @@
   --navy:         #2A114B;
   --darkest:      #180018;
 
-  /* semantic */
-  --bg:           #180018;
-  --bg-alt:       #1c0a1c;
-  --surface:      #2A114B;
-  --surface-alt:  #3a1a42;
-  --border:       rgba(223,182,178,0.14);
-  --text:         #FAE5D8;
-  --text-sub:     #DFB6B2;
-  --text-muted:   #9b6e87;
-  --nav-blur:     rgba(24,0,24,0.82);
-  --grid-line:    rgba(223,182,178,0.07);
-  --card-dark:    #0e0516;
-  --card-campaign:linear-gradient(145deg,#2A114B 0%,#522959 100%);
-  --card-feat:    rgba(42,17,75,0.7);
-  --feat-bg:      rgba(250,229,216,0.08);
-  --input-bg:     rgba(42,17,75,0.5);
-  --btn-bg:       #DFB6B2;
-  --btn-text:     #180018;
-  --pill-bg:      rgba(250,229,216,0.12);
-  --pill-text:    #FAE5D8;
-  --tag-bg:       rgba(130,77,105,0.35);
-  --hero-card1:   #2e1640;
-  --hero-card2:   #14081e;
-  --hero-card3:   #4a2050;
-  --chart-color:  #DFB6B2;
-}
-
-[data-theme="light"] {
+  /* light mode (default) */
   --bg:           #FAE5D8;
   --bg-alt:       #f2d8cc;
   --surface:      #ffffff;
@@ -64,6 +37,33 @@
   --hero-card2:   #1a0a2e;
   --hero-card3:   #6b3a5a;
   --chart-color:  #824D69;
+}
+
+[data-theme="dark"] {
+  --bg:           #180018;
+  --bg-alt:       #1c0a1c;
+  --surface:      #2A114B;
+  --surface-alt:  #3a1a42;
+  --border:       rgba(223,182,178,0.14);
+  --text:         #FAE5D8;
+  --text-sub:     #DFB6B2;
+  --text-muted:   #9b6e87;
+  --nav-blur:     rgba(24,0,24,0.82);
+  --grid-line:    rgba(223,182,178,0.07);
+  --card-dark:    #0e0516;
+  --card-campaign:linear-gradient(145deg,#2A114B 0%,#522959 100%);
+  --card-feat:    rgba(42,17,75,0.7);
+  --feat-bg:      rgba(250,229,216,0.08);
+  --input-bg:     rgba(42,17,75,0.5);
+  --btn-bg:       #DFB6B2;
+  --btn-text:     #180018;
+  --pill-bg:      rgba(250,229,216,0.12);
+  --pill-text:    #FAE5D8;
+  --tag-bg:       rgba(130,77,105,0.35);
+  --hero-card1:   #2e1640;
+  --hero-card2:   #14081e;
+  --hero-card3:   #4a2050;
+  --chart-color:  #DFB6B2;
 }
 
 /* ============================================================
@@ -119,13 +119,12 @@ input, textarea {
   position: absolute;
   inset: 0;
   z-index: -2;
-  /* Full opacity, vivid colors that still support light text */
-  background: linear-gradient(
+  background-image: linear-gradient(
     -45deg,
-    #180018,
-    #2e1640,
-    #4a2050,
-    #180018
+    var(--cream),
+    #eecfc7,
+    var(--blush),
+    var(--cream)
   );
   opacity: 1; 
   background-size: 400% 400%;
@@ -133,13 +132,13 @@ input, textarea {
   pointer-events: none;
 }
 
-[data-theme="light"] .animated-bg::after {
-  background-image: linear-gradient(
+[data-theme="dark"] .animated-bg::after {
+  background: linear-gradient(
     -45deg,
-    var(--cream),
-    #eecfc7,
-    var(--blush),
-    var(--cream)
+    #180018,
+    #2e1640,
+    #4a2050,
+    #180018
   );
   opacity: 1; 
 }

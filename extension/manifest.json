@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "eXsite AI Shopping Assistant",
+  "version": "1.0",
+  "description": "Premium AI-powered shopping engine and price comparison.",
+  "permissions": ["activeTab", "scripting"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.amazon.in/*", "*://*.amazon.com/*", "*://*.flipkart.com/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "host_permissions": ["*://*.amazon.in/*", "*://*.amazon.com/*", "*://*.flipkart.com/*"]
+}
