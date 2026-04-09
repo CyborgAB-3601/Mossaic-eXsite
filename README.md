@@ -166,23 +166,48 @@ Frontend: `http://localhost:3000`
 
 ---
 
-## Deploying to Vercel
+## Deploying to Production (Vercel & Render)
 
-### Frontend (Mossaic-eXsite)
-1. Push `Mossaic-eXsite/` to GitHub
-2. Connect to Vercel
-3. Set `NEXT_PUBLIC_API_URL` = deployed backend URL
-4. Deploy
+This project has two parts: a Next.js frontend and a FastAPI backend with heavy machine learning libraries (`torch`, `sentence-transformers`).
 
-### Backend (ai-ecommerce)
-Deploy to Railway/Render/Fly.io/Cloud Run:
-1. Ensure CORS allows your Vercel domain
-2. Set `SUPABASE_URL`, `SUPABASE_KEY`, `GEMINI_API_KEY`
+### 1. Frontend (Deploy to Vercel)
+The Next.js frontend is fully Vercel-ready.
+1. Push this entire repository (`Mossaic-eXsite` and `ai-ecommerce`) to a GitHub repository.
+2. Go to [Vercel](https://vercel.com/) and click **Add New Project**.
+3. Import your GitHub repository.
+4. **CRITICAL**: In the "Root Directory" settings, click Edit and select `Mossaic-eXsite`.
+5. Under **Environment Variables**, add:
+   - `NEXT_PUBLIC_API_URL` = (leave blank for now, you will update this after deploying the backend)
+6. Click **Deploy**. for deploying
 
-### Extension (for production)
-After backend is deployed, update `background.js`:
-- Change `API_BASE` from `http://127.0.0.1:8000` to your deployed URL
-- Package and publish to Chrome Web Store
+### 2. Backend (Deploy to Render / Railway)
+*Note: Vercel serverless functions have a 250MB size limit. The `torch` library required by `sentence-transformers` is ~800MB, so it **will fail** if you try to deploy the backend to Vercel's standard serverless environment. Render or Railway are the standard workarounds.*
+
+**Deploying on Render:**
+1. Go to [Render.com](https://render.com/) and click **New Web Service**.
+2. Connect your GitHub repository.
+3. Configure the service:
+   - **Root Directory**: `ai-ecommerce`
+   - **Environment**: `Python 3`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+4. Under **Environment Variables**, add:
+   - `SUPABASE_URL` = your Supabase URL
+   - `SUPABASE_KEY` = your Supabase Key
+   - `GEMINI_API_KEY` = your Google Gemini API Key
+5. Click **Create Web Service**.
+
+### 3. Link them up
+1. Once Render finishes deploying the backend, copy its URL (e.g., `https://ai-ecommerce-xyz.onrender.com`).
+2. Go back to your Vercel project settings for the frontend.
+3. Go to **Settings > Environment Variables**, and set:
+   - `NEXT_PUBLIC_API_URL` = `https://ai-ecommerce-xyz.onrender.com`
+4. Go to **Deployments** in Vercel and click **Redeploy** so it picks up the new URL.
+
+### 4. Extension (for production)
+After the backend is deployed on Render, update `extension/background.js`:
+- Change `API_BASE` from `http://127.0.0.1:8000` to your Render backend URL.
+- Package the extension folder and load/publish.
 
 ---
 
