@@ -98,10 +98,15 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
             }}
             className="nav-links"
           >
-            {(["About", "Blog", "Resources", "Contact Us"] as const).map((label) => (
+            {([
+              { label: "Search", href: "/search" },
+              { label: "Blog", href: "#blog" },
+              { label: "Resources", href: "#resources" },
+              { label: "Contact Us", href: "#contact-us" }
+            ]).map((item) => (
               <Link
-                key={label}
-                href={`#${label.toLowerCase().replace(" ", "-")}`}
+                key={item.label}
+                href={item.href}
                 style={{
                   fontSize: ".9rem",
                   fontWeight: 500,
@@ -113,7 +118,7 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
                 onMouseEnter={e => (e.currentTarget.style.color = "var(--text)")}
                 onMouseLeave={e => (e.currentTarget.style.color = "var(--text-sub)")}
               >
-                {label}
+                {item.label}
               </Link>
             ))}
 
@@ -268,10 +273,16 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
             gap: ".75rem",
           }}
         >
-          {["About", "Services", "Blog", "Resources", "Contact Us"].map((l) => (
+          {[
+            { label: "Search", href: "/search" },
+            { label: "Services", href: "#services" },
+            { label: "Blog", href: "#blog" },
+            { label: "Resources", href: "#resources" },
+            { label: "Contact Us", href: "#contact-us" }
+          ].map((l) => (
             <Link
-              key={l}
-              href={`#${l.toLowerCase().replace(" ", "-")}`}
+              key={l.label}
+              href={l.href}
               onClick={() => setMobileOpen(false)}
               style={{
                 fontSize: ".9rem",
@@ -282,7 +293,7 @@ export default function Navbar({ theme, onToggleTheme }: NavbarProps) {
                 borderBottom: "1px solid var(--border)",
               }}
             >
-              {l}
+              {l.label}
             </Link>
           ))}
           <div style={{ display: "flex", gap: ".75rem", paddingTop: ".5rem" }}>
