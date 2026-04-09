@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "AI Price Tracker",
+  "version": "1.0",
+  "description": "Collect product data for training",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": [
+    "https://*.amazon.in/*",
+    "https://*.amazon.com/*",
+    "https://*.flipkart.com/*",
+    "https://*.supabase.co/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.amazon.in/*",
+        "https://*.amazon.com/*",
+        "https://*.flipkart.com/*"
+      ],
+      "js": ["content.js"]
+    }
+  ]
+}
