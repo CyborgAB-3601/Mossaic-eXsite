@@ -4,7 +4,7 @@
 
 const SUPABASE_URL = "https://xzrutoixnjnbrcpdwhgw.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6cnV0b2l4bmpuYnJjcGR3aGd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3MTAyMTYsImV4cCI6MjA5MTI4NjIxNn0.k9zmw6Rq9NMC8uul3nG_fx8Aq6AG_BEDdR2cLdRlbfo";
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = "https://ai-ecommerce-backend-z48c.onrender.com";
 
 // ── Store product in Supabase ────────────────────────────────────
 async function storeProduct(data) {
