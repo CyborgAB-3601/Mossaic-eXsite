@@ -1,70 +1,103 @@
-# Mossaic-eXsite
-An all in one AI powered Agentic Shopping Tool for the AI age.
+# 🛒 Exsite
 
-eXsite is a Chrome extension that makes online shopping less annoying.
+Exsite is a Chrome extension that makes online shopping simpler and less repetitive.
 
-Most of the time, buying something online means jumping between sites like Amazon and Flipkart, checking prices, looking for coupons, and then repeating the same process again.
-This project tries to reduce that effort.
+Instead of jumping between sites like Amazon and Flipkart, comparing prices, and checking out separately, Exsite brings everything into one flow.
 
-What it does
-Price comparison on the spot
+---
 
-When you open a product on Amazon, the extension picks up the product details and checks if there’s a better deal on Flipkart.
+## 🧩 What it does
 
-If there is, it shows it right there.
-No need to search again.
+### 🔍 Price comparison on the spot
+When you open a product page on Amazon, Exsite automatically checks if the same or similar product is available for a better price on Flipkart.
 
-Search using normal language
+If it finds a better deal, it shows it instantly.  
+No extra searching.
 
-There’s also a full-screen interface where you can type something like:
+---
 
-“laptop under 20k for coding”
+### 💬 Search the way you think
+You can open the full interface and type something like:
 
-It understands the request and shows relevant products instead of making you use filters.
+> laptop under 20k for coding
 
-Better decisions for multiple items
+The system understands the request and shows relevant products without needing filters.
 
-If you’re buying more than one thing, it doesn’t just list products.
+---
 
-It tries to find the cheapest combination:
+### 🧠 Smarter choices for multiple items
+If you’re buying more than one product, Exsite helps you figure out the cheapest way to buy them.
 
-maybe one item is cheaper on Amazon
-another is cheaper on Flipkart
+It gives you:
+- Best combined option (mix of platforms)  
+- Amazon-only option  
+- Flipkart-only option  
 
-You’ll see:
+---
 
-best combined option
-Amazon-only option
-Flipkart-only option
-Simulated checkout (Agent Pay)
+### 🤖 Agent Pay (simulated checkout)
+Instead of going through each site manually, you can use **Agent Pay**.
 
-Instead of going through each site manually, you can click “Agent Pay”.
+It simulates:
+- Opening the platform  
+- Adding items to cart  
+- Going through checkout  
 
-It will:
+At the end, you get a single summary with all items and total cost.  
+(This is simulated for now, no real payments.)
 
-simulate opening the site
-add items to cart
-go through checkout steps
+---
 
-At the end, you get a single summary showing everything you “bought”.
-This is just a simulation for now, not real payments.
+## 🏗️ How it’s built
 
-How it’s built
-Chrome extension handles scraping and UI
-Backend is built using Next.js
-AI understanding is handled by Google Gemini
-Data is stored in Supabase
-What’s not perfect
-Product matching is basic
-Data is limited
-Checkout is not real
-Coupon support is minimal
-Why this exists
+- Chrome Extension → handles scraping and UI  
+- Backend → built with Next.js  
+- AI → powered by Google Gemini  
+- Database → managed using Supabase  
 
-Not because price comparison tools don’t exist.
+---
 
-But because the process still feels manual.
-You still have to do everything yourself.
+## ⚙️ Tech stack
+
+- Next.js  
+- Chrome Extension APIs  
+- Supabase  
+- Google Gemini API  
+
+---
+
+## ⚠️ Current limitations
+
+- Checkout is simulated  
+- Product matching is basic  
+- Limited product data  
+- Coupon support is minimal  
+
+---
+
+## 🔮 Future improvements
+
+- Real checkout integration  
+- Better product matching  
+- Live pricing APIs  
+- Smarter recommendations  
+
+---
+
+## 💭 Why this project
+
+Online shopping still feels manual.
+
+This project explores what happens if a system can:
+- understand what you want  
+- compare options  
+- and handle the process for you  
+
+---
+
+## 📌 Note
+
+This was built as a hackathon project, so the focus is on the idea and flow rather than production-level accuracy.
 
 This project is more about exploring what happens if that process is handled for you instead.
 Here is The Architecture Diagram
