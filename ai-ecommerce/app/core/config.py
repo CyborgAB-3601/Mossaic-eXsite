@@ -8,6 +8,10 @@ SUPABASE_URL = os.getenv("SUPABASE_URL", "")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY", "")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 
+# eXsite Bot System Supabase (Playwright checkout bots)
+EXSITE_SUPABASE_URL = os.getenv("EXSITE_SUPABASE_URL", "")
+EXSITE_SUPABASE_KEY = os.getenv("EXSITE_SUPABASE_KEY", "")
+
 # Validate critical env vars at startup — print warnings instead of crashing
 if not SUPABASE_URL:
     print("[eXsite] WARNING: SUPABASE_URL not set!", flush=True)

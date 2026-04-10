@@ -10,6 +10,7 @@ from app.core.config import AVAILABLE_CATEGORIES
 from app.core.database import supabase, embedding_model
 from app.services.intent_parser import parse_intent
 from app.services.search import search_products, search_for_goal
+from app.services.buy_bundle import process_bundle_purchase, get_job_status
 
 app = FastAPI(title="AI E-Commerce API", version="1.0.0")
 
@@ -34,6 +35,21 @@ class CompareRequest(BaseModel):
     product_name: str
     current_marketplace: str
     current_price: Optional[float] = None
+
+
+class BundleProduct(BaseModel):
+    name: str
+    price: float
+    retailer: str
+    image: Optional[str] = None
+
+
+class BuyBundleRequest(BaseModel):
+    products: list[BundleProduct]
+
+
+class JobStatusRequest(BaseModel):
+    job_ids: list[str]
 
 
 @app.get("/")
@@ -108,6 +124,38 @@ async def compare_prices(req: CompareRequest):
         }
     except Exception as e:
         return {"error": str(e), "competitors": [], "best_deal": None, "savings": 0}
+
+
+@app.post("/api/buy-bundle")
+async def buy_bundle(req: BuyBundleRequest):
+    """
+    Triggers Playwright auto-checkout bots for each product in the bundle.
+    Inserts products + jobs into the eXsite bot system Supabase.
+    The worker.js picks up pending jobs and launches browser bots.
+    """
+    try:
+        products = [p.model_dump() for p in req.products]
+        print(f"[eXsite] Buy Bundle request: {len(products)} products", flush=True)
+        for p in products:
+            print(f"  → {p['name']} (₹{p['price']}) from {p['retailer']}", flush=True)
+        result = process_bundle_purchase(products)
+        print(f"[eXsite] Buy Bundle result: success={result.get('success')}, jobs={result.get('jobs_created')}, errors={result.get('errors')}", flush=True)
+        return result
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        print(f"[eXsite] Buy Bundle EXCEPTION: {e}", flush=True)
+        return {"success": False, "error": str(e), "jobs": [], "jobs_created": 0, "errors": [], "message": str(e)}
+
+
+@app.post("/api/job-status")
+async def job_status(req: JobStatusRequest):
+    """Check the status of checkout jobs."""
+    try:
+        jobs = get_job_status(req.job_ids)
+        return {"jobs": jobs}
+    except Exception as e:
+        return {"error": str(e), "jobs": []}
 
 
 @app.post("/api/search")
